@@ -14,7 +14,7 @@ namespace ExpenseApi.Controllers
         private readonly ILogger<ExpenseController> _logger;
         private readonly LiteDbExpenseService _expenseDbService;
 
-        public ExpenseController(ILogger<WeatherForecastController> logger, LiteDbExpenseService expenseDbService)
+        public ExpenseController(ILogger<ExpenseController> logger, LiteDbExpenseService expenseDbService)
         {
             _expenseDbService = expenseDbService;
             //_logger = logger;
@@ -22,14 +22,14 @@ namespace ExpenseApi.Controllers
 
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Expense> Get()
         {
-            return new List<string> {"Hello expense world"};
+            return _expenseDbService.FindAll();
         }
 
 
-        [HttpGet("{id}", Name = "FindOne")]
-        public ActionResult<WeatherForecast> Get(int id)
+        [HttpGet("{id}")]
+        public ActionResult<Expense> Get(int id)
         {
             var result = _expenseDbService.FindOne(id);
             if (result != default)
@@ -39,24 +39,27 @@ namespace ExpenseApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Expense> Insert(Expense dto)
+        public ActionResult<Expense> Insert([FromBody]Expense dto)
         {
             var  returnId = _expenseDbService.Insert(dto);
-            if (returnId != default)
-                return CreatedAtAction("FindOne", _expenseDbService.FindOne(dto.Id));
+             ActionResult actionResult;
+
+             if (returnId != default)
+                 actionResult = CreatedAtAction("Get", returnId);
             else
-                return BadRequest();
+                actionResult = BadRequest();
+            return actionResult;
         }
 
-        [HttpPut]
-        public ActionResult<Expense> Update(Expense dto)
-        {
-            var result = _expenseDbService.Update(dto);
-            if (result)
-                return NoContent();
-            else
-                return NotFound();
-        }
+        //[HttpPut]
+        //public ActionResult<Expense> Update(Expense dto)
+        //{
+        //    var result = _expenseDbService.Update(dto);
+        //    if (result)
+        //        return NoContent();
+        //    else
+        //        return NotFound();
+        //}
 
         //[HttpDelete("{id}")]
         //public ActionResult<Expense> Delete(int id)

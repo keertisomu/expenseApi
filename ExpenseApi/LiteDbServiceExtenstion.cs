@@ -10,8 +10,8 @@ namespace ExpenseApi
     {
         public static void AddLiteDb(this IServiceCollection services, string databasePath)
         {
-            services.AddTransient<LiteDbContext, LiteDbContext>();
-            services.AddTransient<LiteDbExpenseService, LiteDbExpenseService>();
+            services.AddSingleton<ILiteDbContext, LiteDbContext>();
+            services.AddSingleton<LiteDbExpenseService, LiteDbExpenseService>();
             services.Configure<LiteDbConfig>(options => options.DatabasePath = databasePath);
         }
     }

@@ -7,9 +7,9 @@ using Microsoft.Extensions.Options;
 
 namespace ExpenseApi
 {
-    public class LiteDbContext
+    public class LiteDbContext : ILiteDbContext
     {
-        public readonly LiteDatabase Context;
+        
         public LiteDbContext(IOptions<LiteDbConfig> configs)
         {
             try
@@ -22,5 +22,7 @@ namespace ExpenseApi
                 throw new Exception("Can find or create LiteDb database.", ex);
             }
         }
+
+        public LiteDatabase Context { get; }
     }
 }
