@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,44 +9,44 @@ namespace ExpenseApi.Controllers
     public class ExpenseController : Controller
     {
         private readonly ILogger<ExpenseController> _logger;
-        private readonly LiteDbExpenseService _expenseDbService;
 
-        public ExpenseController(ILogger<ExpenseController> logger, LiteDbExpenseService expenseDbService)
+        private readonly IRepository<Expense> _expenseRepository;
+
+        public ExpenseController(IRepository<Expense> expenseRepository)
         {
-            _expenseDbService = expenseDbService;
-            //_logger = logger;
+            _expenseRepository = expenseRepository;
         }
 
 
         [HttpGet]
         public IEnumerable<Expense> Get()
         {
-            return _expenseDbService.FindAll();
+            return _expenseRepository.FindAll();
         }
 
 
         [HttpGet("{id}")]
         public ActionResult<Expense> Get(int id)
-        {
-            var result = _expenseDbService.FindOne(id);
+        {   
+            var result = _expenseRepository.FindOne(id);
             if (result != default)
-                return Ok(_expenseDbService.FindOne(id));
-            else
-                return NotFound();
+                return Ok(_expenseRepository.FindOne(id));
+            return NotFound();
         }
+    
+        //yet to implement
+        //[HttpPost]
+        //public ActionResult<Expense> Insert([FromBody]Expense dto)
+        //{
+        //    var  returnId = _expenseDbService.Insert(dto);
+        //     ActionResult actionResult;
 
-        [HttpPost]
-        public ActionResult<Expense> Insert([FromBody]Expense dto)
-        {
-            var  returnId = _expenseDbService.Insert(dto);
-             ActionResult actionResult;
-
-             if (returnId != default)
-                 actionResult = CreatedAtAction("Get", returnId);
-            else
-                actionResult = BadRequest();
-            return actionResult;
-        }
+        //     if (returnId != default)
+        //         actionResult = CreatedAtAction("Get", returnId);
+        //    else
+        //        actionResult = BadRequest();
+        //    return actionResult;
+        //}
 
         //[HttpPut]
         //public ActionResult<Expense> Update(Expense dto)

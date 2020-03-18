@@ -5,8 +5,13 @@ using System.Threading.Tasks;
 
 namespace ExpenseApi
 {
-    public class LiteDbConfig
+    public class LiteDbConfig : IDbConfig
     {
         public string DatabasePath { get; set; }
+    }
+
+    public interface IDbConfig
+    {
+        string DatabasePath { get; set; }
     }
 }

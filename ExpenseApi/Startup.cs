@@ -29,7 +29,7 @@ namespace ExpenseApi
             services.AddControllers();
 
             services.AddMvc();
-            services.AddLiteDb(@"expense.db");
+            services.RegisterRepositoryInstances(@"expense.db");
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
