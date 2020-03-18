@@ -39,5 +39,17 @@ namespace ExpenseApi
             return _databaseContext.GetCollection<Expense>("expense")
                 .Insert(expense);
         }
+
+        public bool Update(Expense expense)
+        {
+            return _databaseContext.GetCollection<Expense>("expense")
+                .Update(expense);
+        }
+
+        public bool Delete(int id)
+        {
+            return _databaseContext.GetCollection<Expense>("expense")
+                .Delete(id);
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace ExpenseApi
         IEnumerable<T> FindAll();
         T FindOne(int id);
         int Insert(T expense);
+        bool Update(T expense);
+        bool Delete(int id);
     }
 }

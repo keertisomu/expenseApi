@@ -33,39 +33,42 @@ namespace ExpenseApi.Controllers
                 return Ok(_expenseRepository.FindOne(id));
             return NotFound();
         }
-    
-        //yet to implement
-        //[HttpPost]
-        //public ActionResult<Expense> Insert([FromBody]Expense dto)
-        //{
-        //    var  returnId = _expenseDbService.Insert(dto);
-        //     ActionResult actionResult;
 
-        //     if (returnId != default)
-        //         actionResult = CreatedAtAction("Get", returnId);
-        //    else
-        //        actionResult = BadRequest();
-        //    return actionResult;
-        //}
+        
+        [HttpPost]
+        public ActionResult<Expense> Insert([FromBody]Expense dto)
+        {
+            var returnId = _expenseRepository.Insert(dto);
+            ActionResult actionResult;
 
-        //[HttpPut]
-        //public ActionResult<Expense> Update(Expense dto)
-        //{
-        //    var result = _expenseDbService.Update(dto);
-        //    if (result)
-        //        return NoContent();
-        //    else
-        //        return NotFound();
-        //}
+            if (returnId != default)
+                actionResult = CreatedAtAction("Get", returnId);
+            else
+                actionResult = BadRequest();
+            return actionResult;
+        }
 
-        //[HttpDelete("{id}")]
-        //public ActionResult<Expense> Delete(int id)
-        //{
-        //    var result = _expenseDbService.Delete(id);
-        //    if (result > 0)
-        //        return NoContent();
-        //    else
-        //        return NotFound();
-        //}
+        
+        [HttpPut]
+        public ActionResult<Expense> Update(Expense dto)
+        {
+            var result = _expenseRepository.Update(dto);
+            ActionResult actionResult;
+            if (result)
+                actionResult = CreatedAtAction("Get", dto.Id);
+            else
+                actionResult = BadRequest();
+            return actionResult;
+        }
+
+        
+        [HttpDelete("{id}")]
+        public ActionResult<Expense> Delete(int id)
+        {
+            var result = _expenseRepository.Delete(id);
+            if (result)
+                return NoContent();
+            return NotFound();
+        }
     }
 }
