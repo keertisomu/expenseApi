@@ -16,6 +16,9 @@ namespace ExpenseApi
 {
     public class Startup
     {
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,7 +29,16 @@ namespace ExpenseApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("*");
+                });
+            });
+
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddMvc();
             services.RegisterRepositoryInstances(@"expense.db");
@@ -45,6 +57,8 @@ namespace ExpenseApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
