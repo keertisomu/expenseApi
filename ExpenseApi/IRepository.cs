@@ -8,9 +8,9 @@ namespace ExpenseApi
     public interface IRepository<T>
     {
         IEnumerable<T> FindAll();
-        T FindOne(int id);
-        int Insert(T expense);
+        T FindOne(string id);
+        string Insert(T expense);
         bool Update(T expense);
-        bool Delete(int id);
+        bool Delete(string id);
     }
 }

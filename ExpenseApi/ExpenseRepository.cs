@@ -28,13 +28,13 @@ namespace ExpenseApi
                 .FindAll();
         }
 
-        public Expense FindOne(int id)
+        public Expense FindOne(string id)
         {
             return _databaseContext.GetCollection<Expense>("expense")
                 .Find(x => x.Id == id).FirstOrDefault();
         }
 
-        public int Insert(Expense expense)
+        public string Insert(Expense expense)
         {
             return _databaseContext.GetCollection<Expense>("expense")
                 .Insert(expense);
@@ -46,7 +46,7 @@ namespace ExpenseApi
                 .Update(expense);
         }
 
-        public bool Delete(int id)
+        public bool Delete(string id)
         {
             return _databaseContext.GetCollection<Expense>("expense")
                 .Delete(id);
